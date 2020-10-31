@@ -4,5 +4,6 @@ import com.tistory.jeongs0222.ninetooneassignment.ui.main.MainModule
 
 
 val AppModule = arrayListOf(
+    ApiModule,
     MainModule
 )

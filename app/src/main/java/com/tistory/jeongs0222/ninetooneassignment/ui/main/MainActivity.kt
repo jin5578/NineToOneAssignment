@@ -1,10 +1,12 @@
 package com.tistory.jeongs0222.ninetooneassignment.ui.main
 
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import com.tistory.jeongs0222.ninetooneassignment.R
 import com.tistory.jeongs0222.ninetooneassignment.databinding.ActivityMainBinding
 import com.tistory.jeongs0222.ninetooneassignment.ui.BaseActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -20,6 +22,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             viewModel = this@MainActivity.viewModel
             lifecycleOwner = this@MainActivity
         }
+
+        viewModel.searchText.observe(this, Observer {
+
+        })
     }
 
 }
