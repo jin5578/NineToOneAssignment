@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">NineToOneAssignment</string>
+    <string name="kakao_app_key">cf8b32f0627b442dea0d6d574785a356</string>
 
     <string name="search_hint">주소, 장소 검색</string>
 </resources>

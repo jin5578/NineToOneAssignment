@@ -7,7 +7,6 @@ import timber.log.Timber
 
 
 class NineToOneApp : Application() {
-
     override fun onCreate() {
         super.onCreate()
 
@@ -17,5 +16,4 @@ class NineToOneApp : Application() {
 
         startKoin(this, AppModule)
     }
-
 }
