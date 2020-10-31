@@ -15,6 +15,45 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="50dp" />
+
+        <EditText
+            android:id="@+id/search"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="@string/search_hint"
+            android:paddingStart="50dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="50dp"
+            android:paddingBottom="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guide_top" />
+
+        <View
+            android:id="@+id/contour"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="1dp"
+            android:background="@color/colorGray1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="@dimen/match_constraint"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/contour" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

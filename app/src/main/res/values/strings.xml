@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NineToOneAssignment</string>
+
+    <string name="search_hint">주소, 장소 검색</string>
 </resources>
