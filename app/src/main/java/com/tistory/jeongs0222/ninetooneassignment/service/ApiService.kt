@@ -10,6 +10,17 @@ import retrofit2.http.Query
 
 interface ApiService {
 
+    /*@Headers("Authorization: KakaoAK $KAKAO_API_KEY")
+    @GET("v2/local/search/keyword.json")
+    fun searchKeywordLocation(
+        @Query("query") query: String,
+        @Query("x") x: String,
+        @Query("y") y: String,
+        @Query("radius") radius: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: String
+    ): Single<KeywordLocation>*/
+
     @Headers("Authorization: KakaoAK $KAKAO_API_KEY")
     @GET("v2/local/search/keyword.json")
     fun searchKeywordLocation(

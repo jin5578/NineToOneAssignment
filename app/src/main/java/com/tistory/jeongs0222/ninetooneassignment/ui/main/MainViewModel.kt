@@ -13,15 +13,12 @@ class MainViewModel(
     private val repository: MainRepository
 ) : DisposableViewModel() {
 
-    val searchText = MutableLiveData<String>()
+    val searchLocationText = MutableLiveData<String>()
 
-    init {
-        searchLocation()
-    }
 
-    private fun searchLocation() {
+    fun searchLocation(query: String) {
         compositeDisposable add
-                repository.searchKeywordLocation("하남", 10)
+                repository.searchKeywordLocation(query, 10)
                     .subscribeOn(Schedulers.io())
                     .retry(1)
                     .observeOn(AndroidSchedulers.mainThread())

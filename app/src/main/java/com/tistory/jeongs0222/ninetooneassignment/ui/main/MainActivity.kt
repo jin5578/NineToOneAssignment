@@ -29,8 +29,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private val locationManager by lazy { getSystemService(Context.LOCATION_SERVICE) as LocationManager }
 
-    private lateinit var longitude: String
     private lateinit var latitude: String
+    private lateinit var longitude: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,8 +43,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
         checkPermission()
 
-        viewModel.searchText.observe(this, Observer {
-
+        viewModel.searchLocationText.observe(this, Observer {
+            viewModel.searchLocation(it)
         })
     }
 
@@ -79,8 +79,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
         }
 
-        longitude = location.longitude.toString()
         latitude = location.latitude.toString()
+        longitude = location.longitude.toString()
     }
 
     override fun onRequestPermissionsResult(

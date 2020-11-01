@@ -10,7 +10,10 @@ class MainRepositoryImpl(
     private val apiService: ApiService
 ) : MainRepository {
 
-    override fun searchKeywordLocation(query: String, size: Int): Single<KeywordLocation> =
+    override fun searchKeywordLocation(
+        query: String,
+        size: Int
+    ): Single<KeywordLocation> =
         apiService.searchKeywordLocation(query, size)
 
 }
