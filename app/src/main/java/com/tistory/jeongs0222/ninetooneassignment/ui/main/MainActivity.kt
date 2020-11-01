@@ -2,6 +2,7 @@ package com.tistory.jeongs0222.ninetooneassignment.ui.main
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
@@ -9,10 +10,13 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.tistory.jeongs0222.ninetooneassignment.R
 import com.tistory.jeongs0222.ninetooneassignment.databinding.ActivityMainBinding
 import com.tistory.jeongs0222.ninetooneassignment.ui.BaseActivity
+import com.tistory.jeongs0222.ninetooneassignment.ui.webview.WebViewActivity
 import com.tistory.jeongs0222.ninetooneassignment.util.showPermissionAlertDialog
+import com.tistory.jeongs0222.ninetooneassignment.util.showToastMessage
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -48,10 +52,21 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         setInitView()
 
         checkPermission()
+
+        viewModel.showToast.observe(this, Observer {
+            showToastMessage(it)
+        })
+
+        viewModel.navigateToWebView.observe(this, Observer {
+            startActivity(
+                Intent(this, WebViewActivity::class.java)
+                    .putExtra("webViewArgs", it)
+            )
+        })
     }
 
     private fun setInitView() {
-        viewDataBinding.recyclerView.adapter = LocationListAdapter(this)
+        viewDataBinding.recyclerView.adapter = LocationListAdapter(this, viewModel)
 
         viewDataBinding.search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(editable: Editable?) {

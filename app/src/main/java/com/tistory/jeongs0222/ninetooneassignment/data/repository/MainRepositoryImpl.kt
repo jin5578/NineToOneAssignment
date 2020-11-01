@@ -1,7 +1,7 @@
 package com.tistory.jeongs0222.ninetooneassignment.data.repository
 
 import com.tistory.jeongs0222.ninetooneassignment.domain.MainRepository
-import com.tistory.jeongs0222.ninetooneassignment.model.KeywordLocation
+import com.tistory.jeongs0222.ninetooneassignment.model.kakao.KeywordLocation
 import com.tistory.jeongs0222.ninetooneassignment.service.ApiService
 import io.reactivex.Single
 

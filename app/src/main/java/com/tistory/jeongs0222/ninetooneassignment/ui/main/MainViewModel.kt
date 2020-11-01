@@ -3,9 +3,11 @@ package com.tistory.jeongs0222.ninetooneassignment.ui.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tistory.jeongs0222.ninetooneassignment.domain.MainRepository
-import com.tistory.jeongs0222.ninetooneassignment.model.Document
-import com.tistory.jeongs0222.ninetooneassignment.model.KeywordLocation
+import com.tistory.jeongs0222.ninetooneassignment.model.args.WebViewArgs
+import com.tistory.jeongs0222.ninetooneassignment.model.kakao.Document
+import com.tistory.jeongs0222.ninetooneassignment.model.kakao.KeywordLocation
 import com.tistory.jeongs0222.ninetooneassignment.ui.DisposableViewModel
+import com.tistory.jeongs0222.ninetooneassignment.util.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -14,6 +16,14 @@ import timber.log.Timber
 class MainViewModel(
     private val repository: MainRepository
 ) : DisposableViewModel(), MainEventListener {
+
+    private val _showToast = SingleLiveEvent<String>()
+    val showToast: LiveData<String>
+        get() = _showToast
+
+    private val _navigateToWebView = SingleLiveEvent<WebViewArgs>()
+    val navigateToWebView: LiveData<WebViewArgs>
+        get() = _navigateToWebView
 
     private val _locationList = MutableLiveData<MutableList<Document>>()
     val locationList: LiveData<MutableList<Document>>
@@ -42,9 +52,15 @@ class MainViewModel(
     }
 
     override fun locationItemClicked(placeUrl: String) {
-
+        if (validateUrl(placeUrl)) {
+            _navigateToWebView.value = WebViewArgs(placeUrl)
+        } else {
+            _showToast.postValue("존재하지 않는 URL입니다.")
+        }
     }
-    
+
+    private fun validateUrl(placeUrl: String): Boolean = placeUrl != ""
+
 }
 
 interface MainEventListener {

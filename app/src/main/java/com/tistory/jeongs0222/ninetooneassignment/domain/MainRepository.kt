@@ -1,6 +1,6 @@
 package com.tistory.jeongs0222.ninetooneassignment.domain
 
-import com.tistory.jeongs0222.ninetooneassignment.model.KeywordLocation
+import com.tistory.jeongs0222.ninetooneassignment.model.kakao.KeywordLocation
 import io.reactivex.Single
 
 

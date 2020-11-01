@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tistory.jeongs0222.ninetooneassignment.databinding.ItemLocationListBinding
-import com.tistory.jeongs0222.ninetooneassignment.model.Document
+import com.tistory.jeongs0222.ninetooneassignment.model.kakao.Document
 
 
 class LocationListAdapter(
-    private val lifecycleOwner: LifecycleOwner
+    private val lifecycleOwner: LifecycleOwner,
+    private val eventListener: MainEventListener
 ) : ListAdapter<Document, LocationListViewHolder>(LocationDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationListViewHolder {
@@ -22,7 +23,7 @@ class LocationListAdapter(
             false
         )
 
-        return LocationListViewHolder(binding, lifecycleOwner)
+        return LocationListViewHolder(binding, lifecycleOwner, eventListener)
 
     }
 
@@ -34,12 +35,14 @@ class LocationListAdapter(
 
 class LocationListViewHolder(
     private val binding: ItemLocationListBinding,
-    private val lifecycleOwner: LifecycleOwner
+    private val lifecycleOwner: LifecycleOwner,
+    private val eventListener: MainEventListener
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: Document) {
         binding.item = item
 
         binding.lifecycleOwner = lifecycleOwner
+        binding.eventListener = eventListener
         binding.executePendingBindings()
     }
 }

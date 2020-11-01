@@ -1,4 +1,4 @@
-package com.tistory.jeongs0222.ninetooneassignment.model
+package com.tistory.jeongs0222.ninetooneassignment.model.kakao
 
 
 data class KeywordLocation(

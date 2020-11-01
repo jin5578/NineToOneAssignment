@@ -7,13 +7,18 @@
 
         <variable
             name="item"
-            type="com.tistory.jeongs0222.ninetooneassignment.model.Document" />
+            type="com.tistory.jeongs0222.ninetooneassignment.model.kakao.Document" />
+
+        <variable
+            name="eventListener"
+            type="com.tistory.jeongs0222.ninetooneassignment.ui.main.MainEventListener" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> eventListener.locationItemClicked(item.placeUrl)}">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_start"

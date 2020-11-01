@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import android.widget.Toast
 
 
 fun Activity.showPermissionAlertDialog() {
@@ -18,4 +19,8 @@ fun Activity.showPermissionAlertDialog() {
             )
         }
     }.create().show()
+}
+
+fun Activity.showToastMessage(message: String) {
+    Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
 }
