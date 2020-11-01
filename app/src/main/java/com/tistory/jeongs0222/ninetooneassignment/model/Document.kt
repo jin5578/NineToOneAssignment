@@ -8,5 +8,7 @@ data class Document(
     val placeName: String,
     @SerializedName("address_name")
     val addressName: String,
+    @SerializedName("place_url")
+    val placeUrl: String,
     val distance: String
 )

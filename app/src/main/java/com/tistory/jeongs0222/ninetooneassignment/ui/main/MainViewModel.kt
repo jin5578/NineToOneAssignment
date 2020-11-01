@@ -13,7 +13,7 @@ import timber.log.Timber
 
 class MainViewModel(
     private val repository: MainRepository
-) : DisposableViewModel() {
+) : DisposableViewModel(), MainEventListener {
 
     private val _locationList = MutableLiveData<MutableList<Document>>()
     val locationList: LiveData<MutableList<Document>>
@@ -40,4 +40,13 @@ class MainViewModel(
     private fun onErrorException(it: Throwable) {
         it.printStackTrace()
     }
+
+    override fun locationItemClicked(placeUrl: String) {
+
+    }
+    
+}
+
+interface MainEventListener {
+    fun locationItemClicked(placeUrl: String)
 }
