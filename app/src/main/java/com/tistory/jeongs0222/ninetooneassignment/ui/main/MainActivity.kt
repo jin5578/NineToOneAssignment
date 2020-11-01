@@ -5,14 +5,16 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import com.tistory.jeongs0222.ninetooneassignment.R
 import com.tistory.jeongs0222.ninetooneassignment.databinding.ActivityMainBinding
 import com.tistory.jeongs0222.ninetooneassignment.ui.BaseActivity
 import com.tistory.jeongs0222.ninetooneassignment.util.showPermissionAlertDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -32,6 +34,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private lateinit var latitude: String
     private lateinit var longitude: String
 
+    private val timer = Timer()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,14 +48,28 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         setInitView()
 
         checkPermission()
-
-        viewModel.searchLocationText.observe(this, Observer {
-            viewModel.searchLocation(it, longitude, latitude)
-        })
     }
 
     private fun setInitView() {
         viewDataBinding.recyclerView.adapter = LocationListAdapter(this)
+
+        viewDataBinding.search.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(editable: Editable?) {
+                if (editable != null && editable.toString() != "") {
+                    timer.schedule(object : TimerTask() {
+                        override fun run() {
+                            runOnUiThread {
+                                viewModel.searchLocation(editable.toString(), longitude, latitude)
+                            }
+                        }
+                    }, 500)
+                }
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+        })
     }
 
     private fun checkPermission() {
@@ -106,10 +124,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
+    override fun onBackPressed() {
+        finish()
+    }
+
     override fun onRestart() {
         super.onRestart()
 
         checkPermission()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        timer.cancel()
     }
 
 }

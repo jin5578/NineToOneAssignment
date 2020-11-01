@@ -15,8 +15,6 @@ class MainViewModel(
     private val repository: MainRepository
 ) : DisposableViewModel() {
 
-    val searchLocationText = MutableLiveData<String>()
-
     private val _locationList = MutableLiveData<MutableList<Document>>()
     val locationList: LiveData<MutableList<Document>>
         get() = _locationList
@@ -37,7 +35,6 @@ class MainViewModel(
 
     private fun onSuccessSearchLocation(result: KeywordLocation) {
         _locationList.value = result.documents
-        //Timber.e(result.toString())
     }
 
     private fun onErrorException(it: Throwable) {
