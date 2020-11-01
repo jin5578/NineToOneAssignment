@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.tistory.jeongs0222.ninetooneassignment.ui.main.MainLocation" />
+            type="com.tistory.jeongs0222.ninetooneassignment.model.Document" />
 
     </data>
 
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:text="@{item.document.placeName}"
+            android:text="@{item.placeName}"
             android:textColor="@color/colorBlack"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/pin_img"
@@ -73,7 +73,7 @@
             android:layout_marginTop="10dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:text="@{item.document.addressName}"
+            android:text="@{item.addressName}"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/guide_bottom"
             app:layout_constraintEnd_toStartOf="@id/distance"
@@ -85,10 +85,12 @@
             android:id="@+id/distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="12sp"
+            app:distanceFormat="@{item.distance}"
             app:layout_constraintBottom_toBottomOf="@id/address"
             app:layout_constraintEnd_toEndOf="@id/guide_end"
             app:layout_constraintTop_toTopOf="@id/address"
-            tools:text="253m" />
+            tools:text="" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

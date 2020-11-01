@@ -41,11 +41,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             lifecycleOwner = this@MainActivity
         }
 
+        setInitView()
+
         checkPermission()
 
         viewModel.searchLocationText.observe(this, Observer {
-            viewModel.searchLocation(it)
+            viewModel.searchLocation(it, longitude, latitude)
         })
+    }
+
+    private fun setInitView() {
+        viewDataBinding.recyclerView.adapter = LocationListAdapter(this)
     }
 
     private fun checkPermission() {

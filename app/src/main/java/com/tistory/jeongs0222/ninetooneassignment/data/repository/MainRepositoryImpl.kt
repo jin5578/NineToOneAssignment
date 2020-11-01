@@ -12,8 +12,12 @@ class MainRepositoryImpl(
 
     override fun searchKeywordLocation(
         query: String,
-        size: Int
+        longitude: String,
+        latitude: String,
+        radius: Int,
+        size: Int,
+        sort: String
     ): Single<KeywordLocation> =
-        apiService.searchKeywordLocation(query, size)
+        apiService.searchKeywordLocation(query, longitude, latitude, radius, size, sort)
 
 }

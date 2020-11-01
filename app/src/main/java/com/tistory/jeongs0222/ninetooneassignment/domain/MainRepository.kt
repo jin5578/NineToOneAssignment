@@ -8,7 +8,11 @@ interface MainRepository {
 
     fun searchKeywordLocation(
         query: String,
-        size: Int
+        longitude: String,
+        latitude: String,
+        radius: Int,
+        size: Int,
+        sort: String
     ): Single<KeywordLocation>
 
 }
