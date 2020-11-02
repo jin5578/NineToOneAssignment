@@ -1,24 +1,26 @@
 package com.tistory.jeongs0222.ninetooneassignment.ui.main
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import com.jakewharton.rxbinding2.widget.RxTextView
 import com.tistory.jeongs0222.ninetooneassignment.R
 import com.tistory.jeongs0222.ninetooneassignment.databinding.ActivityMainBinding
 import com.tistory.jeongs0222.ninetooneassignment.ui.BaseActivity
 import com.tistory.jeongs0222.ninetooneassignment.ui.webview.WebViewActivity
 import com.tistory.jeongs0222.ninetooneassignment.util.showPermissionAlertDialog
 import com.tistory.jeongs0222.ninetooneassignment.util.showToastMessage
+import io.reactivex.android.schedulers.AndroidSchedulers
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -65,26 +67,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         })
     }
 
+    @SuppressLint("CheckResult")
     private fun setInitView() {
         viewDataBinding.recyclerView.adapter = LocationListAdapter(this, viewModel)
 
-        viewDataBinding.search.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(editable: Editable?) {
-                if (editable != null && editable.toString() != "") {
-                    timer.schedule(object : TimerTask() {
-                        override fun run() {
-                            runOnUiThread {
-                                viewModel.searchLocation(editable.toString(), longitude, latitude)
-                            }
-                        }
-                    }, 500)
+        RxTextView.textChanges(viewDataBinding.search)
+            .throttleLast(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+            .subscribe({ char ->
+                if (char.toString() != "") {
+                    viewModel.searchLocation(char.toString(), longitude, latitude)
                 }
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-        })
+            }, {
+                it.printStackTrace()
+            })
     }
 
     private fun checkPermission() {
