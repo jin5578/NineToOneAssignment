@@ -1,5 +1,7 @@
 package com.tistory.jeongs0222.ninetooneassignment.di
 
+import com.google.gson.GsonBuilder
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.tistory.jeongs0222.ninetooneassignment.BuildConfig
 import com.tistory.jeongs0222.ninetooneassignment.di.Constants.Api.BASE_URL
 import com.tistory.jeongs0222.ninetooneassignment.service.ApiService
@@ -8,7 +10,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module.module
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
@@ -34,8 +35,8 @@ val ApiModule = module {
                     .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
                     .build()
             )
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
             .baseUrl(BASE_URL)
             .build()
             .create(ApiService::class.java)
