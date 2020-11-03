@@ -2,6 +2,7 @@ package com.tistory.jeongs0222.ninetooneassignment.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -11,7 +12,6 @@ import com.tistory.jeongs0222.ninetooneassignment.data.pagingsource.LocationPagi
 import com.tistory.jeongs0222.ninetooneassignment.model.args.WebViewArgs
 import com.tistory.jeongs0222.ninetooneassignment.model.kakao.Document
 import com.tistory.jeongs0222.ninetooneassignment.service.ApiService
-import com.tistory.jeongs0222.ninetooneassignment.ui.DisposableViewModel
 import com.tistory.jeongs0222.ninetooneassignment.util.SingleLiveEvent
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
@@ -19,7 +19,7 @@ import timber.log.Timber
 
 class MainViewModel(
     private val apiService: ApiService
-) : DisposableViewModel(), MainEventListener {
+) : ViewModel(), MainEventListener {
 
     private val _showToast = SingleLiveEvent<String>()
     val showToast: LiveData<String>
