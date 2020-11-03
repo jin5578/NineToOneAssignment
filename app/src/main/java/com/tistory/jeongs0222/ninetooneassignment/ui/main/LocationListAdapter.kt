@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tistory.jeongs0222.ninetooneassignment.databinding.ItemLocationListBinding
 import com.tistory.jeongs0222.ninetooneassignment.model.kakao.Document
@@ -14,7 +14,7 @@ import com.tistory.jeongs0222.ninetooneassignment.model.kakao.Document
 class LocationListAdapter(
     private val lifecycleOwner: LifecycleOwner,
     private val eventListener: MainEventListener
-) : ListAdapter<Document, LocationListViewHolder>(LocationDiff) {
+) : PagingDataAdapter<Document, LocationListViewHolder>(LocationDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationListViewHolder {
         val binding = ItemLocationListBinding.inflate(
@@ -28,7 +28,9 @@ class LocationListAdapter(
     }
 
     override fun onBindViewHolder(holder: LocationListViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        getItem(position)?.let {
+            holder.bind(it)
+        }
     }
 
 }

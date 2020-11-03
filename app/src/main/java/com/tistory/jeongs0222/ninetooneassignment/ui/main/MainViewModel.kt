@@ -2,17 +2,24 @@ package com.tistory.jeongs0222.ninetooneassignment.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.tistory.jeongs0222.ninetooneassignment.data.pagingsource.LocationPagingSource
 import com.tistory.jeongs0222.ninetooneassignment.model.args.WebViewArgs
 import com.tistory.jeongs0222.ninetooneassignment.model.kakao.Document
-import com.tistory.jeongs0222.ninetooneassignment.model.kakao.KeywordLocation
+import com.tistory.jeongs0222.ninetooneassignment.service.ApiService
 import com.tistory.jeongs0222.ninetooneassignment.ui.DisposableViewModel
 import com.tistory.jeongs0222.ninetooneassignment.util.SingleLiveEvent
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 
 
-class MainViewModel() : DisposableViewModel(), MainEventListener {
+class MainViewModel(
+    private val apiService: ApiService
+) : DisposableViewModel(), MainEventListener {
 
     private val _showToast = SingleLiveEvent<String>()
     val showToast: LiveData<String>
@@ -22,30 +29,18 @@ class MainViewModel() : DisposableViewModel(), MainEventListener {
     val navigateToWebView: LiveData<WebViewArgs>
         get() = _navigateToWebView
 
-    private val _locationList = MutableLiveData<MutableList<Document>>()
-    val locationList: LiveData<MutableList<Document>>
-        get() = _locationList
+    private val _locationFlow = MutableLiveData<Flow<PagingData<Document>>>()
+    val locationFlow: LiveData<Flow<PagingData<Document>>>
+        get() = _locationFlow
 
 
     fun searchLocation(query: String, longitude: String, latitude: String) {
-        /*compositeDisposable add
-                repository.searchKeywordLocation(query, longitude, latitude, 20000, 10, "distance")
-                    .subscribeOn(Schedulers.io())
-                    .retry(1)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ result ->
-                        onSuccessSearchLocation(result)
-                    }, {
-                        onErrorException(it)
-                    })*/
-    }
+        Timber.e("longitude%s", longitude)
+        Timber.e("latitude%s", latitude)
 
-    private fun onSuccessSearchLocation(result: KeywordLocation) {
-        _locationList.value = result.documents
-    }
-
-    private fun onErrorException(it: Throwable) {
-        it.printStackTrace()
+        _locationFlow.value = Pager(PagingConfig(pageSize = 10, prefetchDistance = 10)) {
+            LocationPagingSource(apiService, query, longitude, latitude)
+        }.flow.cachedIn(viewModelScope)
     }
 
     override fun locationItemClicked(placeUrl: String) {
