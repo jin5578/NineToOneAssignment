@@ -10,6 +10,7 @@ import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.tistory.jeongs0222.ninetooneassignment.R
 import com.tistory.jeongs0222.ninetooneassignment.databinding.ActivityMainBinding
@@ -18,8 +19,9 @@ import com.tistory.jeongs0222.ninetooneassignment.ui.webview.WebViewActivity
 import com.tistory.jeongs0222.ninetooneassignment.util.showPermissionAlertDialog
 import com.tistory.jeongs0222.ninetooneassignment.util.showToastMessage
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -40,7 +42,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private lateinit var latitude: String
     private lateinit var longitude: String
 
-    private val timer = Timer()
+    private val adapter by lazy { LocationListAdapter(this, viewModel) }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,11 +67,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     .putExtra("webViewArgs", it)
             )
         })
+
+        viewModel.locationFlow.observe(this, Observer {
+            lifecycleScope.launch {
+                it.collectLatest { pagingData ->
+                    adapter.submitData(pagingData)
+                }
+            }
+        })
     }
 
     @SuppressLint("CheckResult")
     private fun setInitView() {
-        viewDataBinding.recyclerView.adapter = LocationListAdapter(this, viewModel)
+        viewDataBinding.recyclerView.adapter = adapter
 
         RxTextView.textChanges(viewDataBinding.search)
             .throttleLast(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
@@ -142,12 +152,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         super.onRestart()
 
         checkPermission()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        timer.cancel()
     }
 
 }
