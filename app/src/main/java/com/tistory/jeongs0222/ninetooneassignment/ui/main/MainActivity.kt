@@ -37,12 +37,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
+    private val adapter by lazy { LocationListAdapter(this, viewModel) }
     private val locationManager by lazy { getSystemService(Context.LOCATION_SERVICE) as LocationManager }
 
     private lateinit var latitude: String
     private lateinit var longitude: String
-
-    private val adapter by lazy { LocationListAdapter(this, viewModel) }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

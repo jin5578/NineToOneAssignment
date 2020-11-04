@@ -9,13 +9,11 @@ import androidx.databinding.BindingAdapter
 @BindingAdapter("distanceFormat")
 fun distanceFormat(textView: TextView, distance: String) {
     val meter = distance.toDouble()
-
     when (meter > 1000.0) {
         true ->
             textView.text = String.format("%.1f", meter / 1000.0) + "km"
 
         false ->
             textView.text = distance + "m"
-
     }
 }
