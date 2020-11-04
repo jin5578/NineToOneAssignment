@@ -49,6 +49,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         super.onCreate(savedInstanceState)
 
         viewDataBinding.apply {
+            adapter = this@MainActivity.adapter
             viewModel = this@MainActivity.viewModel
             lifecycleOwner = this@MainActivity
         }
@@ -79,8 +80,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     @SuppressLint("CheckResult")
     private fun setInitView() {
-        viewDataBinding.recyclerView.adapter = adapter
-
         RxTextView.textChanges(viewDataBinding.search)
             .throttleLast(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
             .subscribe({ char ->

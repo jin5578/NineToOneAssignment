@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="adapter"
+            type="com.tistory.jeongs0222.ninetooneassignment.ui.main.LocationListAdapter" />
+
+        <variable
             name="viewModel"
             type="com.tistory.jeongs0222.ninetooneassignment.ui.main.MainViewModel" />
 
@@ -49,6 +53,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="@dimen/match_constraint"
+            app:adapter="@{adapter}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
