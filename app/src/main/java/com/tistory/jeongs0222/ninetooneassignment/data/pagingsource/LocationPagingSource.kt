@@ -13,13 +13,27 @@ class LocationPagingSource(
     private val query: String,
     private val longitude: String,
     private val latitude: String
-): PagingSource<Int, Document>() {
+) : PagingSource<Int, Document>() {
+
+    companion object {
+        private const val PARAMS_RADIUS = 20000
+        private const val PARAMS_SIZE = 10
+        private const val PARAMS_SORT = "distance"
+    }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Document> {
         return try {
-            val nextPageNumber  = params.key ?: 1
+            val nextPageNumber = params.key ?: 1
 
-            val response = apiService.searchKeywordLocationAsync(query, longitude, latitude, 20000, nextPageNumber, 10, "distance").await()
+            val response = apiService.searchKeywordLocationAsync(
+                query,
+                longitude,
+                latitude,
+                PARAMS_RADIUS,
+                nextPageNumber,
+                PARAMS_SIZE,
+                PARAMS_SORT
+            ).await()
             val keywordLocation = response.body()!!
 
             Timber.e(keywordLocation.toString())
@@ -33,7 +47,7 @@ class LocationPagingSource(
             return LoadResult.Error(exception)
         } catch (exception: HttpException) {
             return LoadResult.Error(exception)
-        }catch (exception : Exception) {
+        } catch (exception: Exception) {
             LoadResult.Error(exception)
         }
     }
